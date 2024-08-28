@@ -23,6 +23,7 @@
                     id="animated-asset"
                     src="assets/asset4.glb"
                 ></a-asset-item>
+                <audio id="sound" src="assets/sound.mp3"></audio> <!-- MP3ファイルを追加 -->
             </a-assets>
 
             <a-marker
@@ -43,9 +44,27 @@
                     class="clickable"
                     gesture-handler
                 ></a-entity>
+                <a-sound
+                    src="#sound"
+                    autoplay="true"
+                    on="markerFound: playSound"
+                    on="markerLost: stopSound"
+                ></a-sound> <!-- サウンドエンティティを追加 -->
             </a-marker>
 
             <a-entity camera></a-entity>
         </a-scene>
+
+        <script>
+            // マーカーが検出されたときにサウンドを再生し、見失ったときに停止する
+            document.querySelector('#markerA').addEventListener('markerFound', () => {
+                document.querySelector('#sound').play();
+            });
+
+            document.querySelector('#markerA').addEventListener('markerLost', () => {
+                document.querySelector('#sound').pause();
+                document.querySelector('#sound').currentTime = 0; // サウンドを停止してリセット
+            });
+        </script>
     </body>
 </html>
